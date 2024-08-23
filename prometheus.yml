@@ -1,0 +1,81 @@
+global:
+  scrape_interval: 15s           # How often to scrape targets by default
+  scrape_timeout: 10s            # Timeout for scraping targets
+  evaluation_interval: 1m        # How often to evaluate rules
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093        # Alertmanager service address
+
+rule_files:
+  - /etc/prometheus/alert_rules.yml  # Rule files for alerts
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']  # Scrape Prometheus itself
+
+  - job_name: 'node'
+    static_configs:
+      - targets: ['18.216.80.50:9100']
+        labels:
+          alias: 'staffviz-javaapis-prod'
+      - targets: ['3.137.20.105:9100']
+        labels:
+          alias: 'staffviz-chat-prod'
+      - targets: ['3.128.41.41:9100']
+        labels:
+          alias: 'staffviz-web-prod'
+      - targets: ['3.15.128.75:9101']
+        labels:
+          alias: 'staffviz-db-prod'
+      - targets: ['3.16.171.11:9100']
+        labels:
+          alias: 'staffviz-app-prod'
+    relabel_configs:
+      - source_labels: [alias]
+        target_label: instance    # Relabel instance names based on alias
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['18.216.80.50:8085']
+        labels:
+          alias: 'staffviz-javaapis-prod'
+      - targets: ['3.137.20.105:8085']
+        labels:
+          alias: 'staffviz-chat-prod'
+      - targets: ['3.128.41.41:8085']
+        labels:
+          alias: 'staffviz-web-prod'
+      - targets: ['3.16.171.11:8085']
+        labels:
+          alias: 'staffviz-app-prod'
+      - targets: ['3.15.128.75:8050']
+        labels:
+          alias: 'staffviz-db-prod'
+    relabel_configs:
+      - source_labels: [alias]
+        target_label: instance    # Relabel instance names based on alias
+
+  - job_name: 'web_check'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a 2xx response
+    static_configs:
+      - targets:
+        - https://app.staffviz.com/login
+        - https://www.staffviz.com/
+        - https://backofficeapi.staffviz.com/
+        - https://backoffice.staffviz.com/
+        - https://api.staffviz.com/api
+        - https://chat.staffviz.com/health/status
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: blackbox_exporter:9115
+      - source_labels: [__param_target]
+        target_label: instance
+

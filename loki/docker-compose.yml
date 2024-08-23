@@ -1,0 +1,16 @@
+version: '3'
+services:
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki_data:/loki
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+    user: "0:0"  # Running as root to avoid permission issues
+
+volumes:
+  loki_data:
+    driver: local
+

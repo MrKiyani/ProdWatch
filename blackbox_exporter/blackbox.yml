@@ -1,0 +1,9 @@
+modules:
+  http_2xx:
+    prober: http
+    timeout: 5s
+    http:
+      valid_http_versions: ["HTTP/1.1", "HTTP/2"]
+      valid_status_codes: [200, 201, 202, 203, 204, 205, 206, 207, 208, 226]  # List of 2xx status codes
+      method: GET
+      preferred_ip_protocol: "ip4"  # or "ip6"

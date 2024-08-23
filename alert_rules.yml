@@ -1,0 +1,122 @@
+groups:
+- name: ContainerMonitoring
+  rules:
+  - alert: ContainerDown
+    expr: changes(container_last_seen{job="cadvisor"}[1m]) == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Container {{ $labels.container }} down"
+      description: "No new metrics for container {{ $labels.container }} have been reported for more than 1 minute."
+
+- name: HostMonitoring
+  rules:
+  - alert: InstanceDown
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Instance {{ $labels.instance }} down"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute."
+  - alert: HighCPUUsage
+    expr: (100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 85
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU usage on {{ $labels.instance }}"
+      description: "{{ $labels.instance }} has had >85% CPU usage for more than 5 minutes."
+  - alert: HighRAMUsage
+    expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High RAM usage on {{ $labels.instance }}"
+      description: "{{ $labels.instance }} has had an average RAM usage of >85% for the last 5 minutes."
+
+  - alert: HighDiskUsage
+    expr: (node_filesystem_avail_bytes{filesystem="<filesystem-name>"} / node_filesystem_size_bytes{filesystem="<filesystem-name>"}) * 100 < 25
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High Disk Usage on {{ $labels.instance }}"
+      description: "{{ $labels.instance }} has less than 25% disk space available for more than 5 minutes."
+
+  - alert: InstanceUnreachable
+    expr: probe_success == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Instance {{ $labels.instance }} unreachable"
+      description: "Ping to {{ $labels.instance }} failed for more than 1 minute."
+
+- name: website_monitoring
+  rules:
+  - alert: WebsiteDown
+    expr: probe_success{instance="https://app.xyz.com/login"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Website down"
+      description: "https://app.xyz.com is down for more than 1 minute"
+
+- name: website_monitoring_2
+  rules:
+  - alert: WebsiteDown
+    expr: probe_success{instance="https://backoffice.xyz.com/"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Website down"
+      description: "https://backoffice.xyz.com/ is down for more than 1 minute"
+
+- name: website_monitoring_3
+  rules:
+  - alert: WebsiteDown
+    expr: probe_success{instance="https://backofficeapi.xyz.com/"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Website down"
+      description: "https://backofficeapi.xyz.com/ is down for more than 1 minute"
+
+- name: website_monitoring_4
+  rules:
+  - alert: WebsiteDown
+    expr: probe_success{instance="https://www.xyz.com/"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Website down"
+      description: "https://www.xyz.com/ is down for more than 1 minute"
+
+- name: website_monitoring_5
+  rules:
+  - alert: WebsiteDown
+    expr: probe_success{instance="https://api.xyz.com/api"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Website down"
+      description: "https://api.xyz.com/ is down for more than 1 minute"
+
+- name: website_monitoring_6
+  rules:
+  - alert: WebsiteDown
+    expr: probe_success{instance="https://chat.xyz.com/health/status"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Website down"
+      description: "https://chat.xyz.com is down for more than 1 minute"

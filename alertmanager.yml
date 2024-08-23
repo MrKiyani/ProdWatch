@@ -1,0 +1,32 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'default-receiver'
+  routes:
+    - receiver: 'email-alerts'
+
+receivers:
+- name: 'default-receiver'
+  email_configs:
+    - to: 'n.shabbir@crecentech.com,a.afzaal@crecentech.com,ITops@staffviz.com,m.ilyas@crecentech.com,support@staffviz.com'
+      send_resolved: true
+      from: 'ITops@staffviz.com'
+      smarthost: 'smtp.office365.com:587'
+      auth_username: 'ITops@staffviz.com'
+      auth_password: 'Ops-iT@cr123'
+      require_tls: true
+
+- name: 'email-alerts'
+  email_configs:
+    - to: 'n.shabbir@crecentech.com,a.afzaal@crecentech.com,ITops@staffviz.com,m.ilyas@crecentech.com,support@staffviz.com'
+      send_resolved: true
+      from: 'ITops@staffviz.com'
+      smarthost: 'smtp.office365.com:587'
+      auth_username: 'ITops@staffviz.com'
+      auth_password: 'Ops-iT@cr123'
+      require_tls: true

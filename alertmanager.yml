@@ -13,20 +13,20 @@ route:
 receivers:
 - name: 'default-receiver'
   email_configs:
-    - to: 'n.shabbir@crecentech.com,a.afzaal@crecentech.com,ITops@staffviz.com,m.ilyas@crecentech.com,support@staffviz.com'
+    - to: 'Email of Reciever (xyz@gmail.com)'
       send_resolved: true
-      from: 'ITops@staffviz.com'
+      from: 'ITops@xyz.com'
       smarthost: 'smtp.office365.com:587'
-      auth_username: 'ITops@staffviz.com'
+      auth_username: 'ITops@xyz.com'
       auth_password: 'Ops-iT@cr123'
       require_tls: true
 
 - name: 'email-alerts'
   email_configs:
-    - to: 'n.shabbir@crecentech.com,a.afzaal@crecentech.com,ITops@staffviz.com,m.ilyas@crecentech.com,support@staffviz.com'
+    - to: 'Email of Reciever (xyz@gmail.com)'
       send_resolved: true
-      from: 'ITops@staffviz.com'
+      from: 'ITops@xyz.com'
       smarthost: 'smtp.office365.com:587'
-      auth_username: 'ITops@staffviz.com'
+      auth_username: 'ITops@xyz.com'
       auth_password: 'Ops-iT@cr123'
       require_tls: true

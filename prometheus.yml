@@ -19,21 +19,21 @@ scrape_configs:
 
   - job_name: 'node'
     static_configs:
-      - targets: ['18.216.80.50:9100']
+      - targets: ['Ip-of-targeted-server:9100']
         labels:
-          alias: 'staffviz-javaapis-prod'
-      - targets: ['3.137.20.105:9100']
+          alias: 'javaapis-prod'
+      - targets: ['Ip-of-targeted-server:9100']
         labels:
-          alias: 'staffviz-chat-prod'
-      - targets: ['3.128.41.41:9100']
+          alias: 'chat-prod'
+      - targets: ['Ip-of-targeted-server:9100']
         labels:
-          alias: 'staffviz-web-prod'
-      - targets: ['3.15.128.75:9101']
+          alias: 'web-prod'
+      - targets: ['Ip-of-targeted-server:9100']
         labels:
-          alias: 'staffviz-db-prod'
-      - targets: ['3.16.171.11:9100']
+          alias: 'db-prod'
+      - targets: ['Ip-of-targeted-server:9100']
         labels:
-          alias: 'staffviz-app-prod'
+          alias: 'app-prod'
     relabel_configs:
       - source_labels: [alias]
         target_label: instance    # Relabel instance names based on alias
@@ -42,19 +42,19 @@ scrape_configs:
     static_configs:
       - targets: ['18.216.80.50:8085']
         labels:
-          alias: 'staffviz-javaapis-prod'
+          alias: 'javaapis-prod'
       - targets: ['3.137.20.105:8085']
         labels:
-          alias: 'staffviz-chat-prod'
+          alias: 'chat-prod'
       - targets: ['3.128.41.41:8085']
         labels:
-          alias: 'staffviz-web-prod'
+          alias: 'web-prod'
       - targets: ['3.16.171.11:8085']
         labels:
-          alias: 'staffviz-app-prod'
+          alias: 'app-prod'
       - targets: ['3.15.128.75:8050']
         labels:
-          alias: 'staffviz-db-prod'
+          alias: 'db-prod'
     relabel_configs:
       - source_labels: [alias]
         target_label: instance    # Relabel instance names based on alias
@@ -65,12 +65,12 @@ scrape_configs:
       module: [http_2xx]  # Look for a 2xx response
     static_configs:
       - targets:
-        - https://app.staffviz.com/login
-        - https://www.staffviz.com/
-        - https://backofficeapi.staffviz.com/
-        - https://backoffice.staffviz.com/
-        - https://api.staffviz.com/api
-        - https://chat.staffviz.com/health/status
+        - https://app.xyz.com/login
+        - https://www.xyz.com/
+        - https://backofficeapi.xyz.com/
+        - https://backoffice.xyz.com/
+        - https://api.xyz.com/api
+        - https://chat.xyz.com/health/status
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
